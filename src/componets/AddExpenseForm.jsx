@@ -32,9 +32,6 @@ const AddExpenseForm = () => {
       // Refetch expense list after adding new expense
       queryClient.invalidateQueries(["expenses"]);
     },
-    onError: (error) => {
-      console.log(error);
-    },
   });
 
   const onSubmit = (data) => {
