@@ -3,6 +3,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import useAxiosSecure from "../Hooks/useAxiosSecure";
 import Swal from "sweetalert2";
+import Button from "../share/button/Button";
 const categories = ["Food", "Transport", "Shopping", "Others"];
 
 const AddExpenseForm = () => {
@@ -41,11 +42,12 @@ const AddExpenseForm = () => {
   };
 
   return (
-    <div className="card p-4">
+    <div className="card p-4 ">
       <h2 className="text-xl font-semibold mb-4">Add Expense</h2>
       <form
+      
         onSubmit={handleSubmit(onSubmit)}
-        className="space-y-3 card p-4 shadow-lg bg-white"
+        className="space-y-3 card p-4 shadow-lg bg-[var(--secondary)]"
       >
         <h2 className="text-xl font-semibold mb-4">Add Expense</h2>
 
@@ -111,9 +113,10 @@ const AddExpenseForm = () => {
           )}
         </div>
 
-        <button type="submit" className="btn btn-primary w-full">
-          Add Expense
-        </button>
+          <Button level=" Add Expense"></Button>
+        {/* <button type="submit" className="btn btn-primary w-full">
+         
+        </button> */}
       </form>
     </div>
   );
