@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import useAxiosSecure from "../Hooks/useAxiosSecure";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Modal from "../share/modal/Modal";
+import Swal from "sweetalert2";
 
 const categoryColors = {
   Food: "badge-success",
@@ -13,7 +14,10 @@ const categoryColors = {
 const ExpenseList = () => {
   const axiosSecure = useAxiosSecure();
   let [isOpen, setIsOpen] = useState(false);
-  const [cardId,setCardId] = useState(0);
+  const [cardId, setCardId] = useState(0);
+
+    const queryClient = useQueryClient();
+
   // Fetch function
   const fetchExpenses = async () => {
     const res = await axiosSecure.get("/expenses");
@@ -26,21 +30,50 @@ const ExpenseList = () => {
     queryFn: fetchExpenses,
   });
 
-  
+   // Mutation for delete
+  const deleteMutation = useMutation({
+    mutationFn: async (id) => {
+      await axiosSecure.delete(`/expenses/${id}`);
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries(["expenses"]);
+       Swal.fire({
+          title: "Deleted!",
+          text: `${data.message}`,
+          icon: "success",
+        });
+    },
+  });
+
+  const handleDelete = (expenseId) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleteMutation.mutate(expenseId)
+      }
+    });
+  };
 
   function open(id) {
-    setCardId(id)
+    setCardId(id);
     setIsOpen(true);
   }
 
   function close() {
     setIsOpen(false);
   }
-  
 
   if (isLoading)
     return <span className="loading loading-spinner loading-xl"></span>;
 
+  //   Total Expense Amount
   const totalExpense = expenses.reduce((sum, exp) => sum + exp.amount, 0);
 
   return (
@@ -60,17 +93,28 @@ const ExpenseList = () => {
                 </span>
               </div>
               <p className="text-gray-600 mb-1">Amount: ${exp.amount}</p>
-              <p className="text-gray-500 mb-3">Date: {new Date(exp.date).toLocaleDateString()}</p>
+              <p className="text-gray-500 mb-3">
+                Date: {new Date(exp.date).toLocaleDateString()}
+              </p>
               <div className="flex gap-2 justify-end">
-                <button onClick={() => open(exp._id)} className="btn btn-sm btn-warning ">
+                <button
+                  onClick={() => open(exp._id)}
+                  className="btn btn-sm btn-warning "
+                >
                   Edit
                 </button>
-                <button className="btn btn-sm btn-error ">Delete</button>
+                <button
+                  onClick={() => handleDelete(exp._id)}
+                  className="btn btn-sm btn-error "
+                >
+                  Delete
+                </button>
               </div>
             </div>
           ))}
         </div>
       </div>
+      {/* Expense update modal */}
       <Modal cardId={cardId} isOpen={isOpen} close={close}></Modal>
     </div>
   );
