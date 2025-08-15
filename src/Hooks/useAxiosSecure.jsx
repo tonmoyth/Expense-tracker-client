@@ -1,8 +1,7 @@
 import axios from 'axios';
-import React from 'react';
 
 const instance = axios.create({
-  baseURL: 'http://localhost:3000',
+  baseURL: 'https://expense-tracker-server-black.vercel.app',
 });
 
 const AxiosSecure = () => {
@@ -10,4 +9,3 @@ const AxiosSecure = () => {
 };
 
 export default AxiosSecure;
-// { origin: ['https://expense-tracker-client-ruddy.vercel.app'] }
