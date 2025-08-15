@@ -1,14 +1,26 @@
-import { Button, Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import Swal from "sweetalert2";
+import Button from "../button/Button";
 const categories = ["Food", "Transport", "Shopping", "Others"];
 
 const Modal = ({ isOpen, close, cardId }) => {
   const { register, handleSubmit, reset } = useForm();
   const axiosSecure = useAxiosSecure();
   const queryClient = useQueryClient();
+
+  const fetchSingleExpense = async (id) => {
+    const res = await axiosSecure.get(`/expenses/${id}`);
+    return res.data;
+  };
+
+   const { data } = useQuery({
+    queryKey: ['expense', cardId],
+    queryFn: () => fetchSingleExpense(cardId),
+    enabled: !!cardId, 
+  });
 
   // Mutation for adding expense
   const mutation = useMutation({
@@ -34,7 +46,7 @@ const Modal = ({ isOpen, close, cardId }) => {
   const onSubmit = (data) => {
     data.amount = parseFloat(data.amount);
     data.date = new Date(data.date); // store as Date object
-    mutation.mutate(data)
+    mutation.mutate(data);
   };
 
   return (
@@ -50,12 +62,16 @@ const Modal = ({ isOpen, close, cardId }) => {
             transition
             className="w-full max-w-md rounded-xl bg-white p-6 shadow-lg"
           >
-            <DialogTitle as="h3" className="text-lg text-center font-medium text-gray-800">
+            <DialogTitle
+              as="h3"
+              className="text-lg text-center font-medium text-gray-800"
+            >
               Update Expense
             </DialogTitle>
 
             <form onSubmit={handleSubmit(onSubmit)} className="mt-4 space-y-4">
               <input
+              defaultValue={data?.title}
                 type="text"
                 placeholder="Title"
                 {...register("title", { required: true })}
@@ -63,6 +79,7 @@ const Modal = ({ isOpen, close, cardId }) => {
               />
 
               <input
+              defaultValue={data?.amount}
                 type="number"
                 placeholder="Amount"
                 {...register("amount", { required: true })}
@@ -83,26 +100,16 @@ const Modal = ({ isOpen, close, cardId }) => {
               </div>
 
               <input
+            
                 type="date"
                 {...register("date", { required: true })}
                 className="input input-bordered w-full"
               />
 
               <div className="flex justify-end gap-2 mt-4">
-                <button
-                  type="button"
-                  className="btn btn-outline"
-                  onClick={close}
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="btn btn-primary"
-                  disabled={mutation.isLoading}
-                >
-                  {mutation.isLoading ? "Update..." : "Update"}
-                </button>
+                <Button onClick={close} level="Cancel"></Button>
+
+                <Button isPending={mutation.isPending} level="Update"></Button>
               </div>
             </form>
           </DialogPanel>

@@ -4,6 +4,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Modal from "../share/modal/Modal";
 import Swal from "sweetalert2";
 import Button from "../share/button/Button";
+import Loading from "../share/Loading/Loading";
 
 
 const categoryColors = {
@@ -80,7 +81,7 @@ const ExpenseList = () => {
   }
 
   if (isLoading)
-    return <span className="loading loading-spinner loading-xl"></span>;
+    return <Loading></Loading>;
 
   //   Total Expense Amount
   const totalExpense = expenses.reduce((sum, exp) => sum + exp.amount, 0);

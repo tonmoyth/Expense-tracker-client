@@ -1,5 +1,4 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import React from "react";
 import { useForm } from "react-hook-form";
 import useAxiosSecure from "../Hooks/useAxiosSecure";
 import Swal from "sweetalert2";
@@ -17,7 +16,7 @@ const AddExpenseForm = () => {
   } = useForm();
 
   //    TanStack mutation for POST request
-  const mutation = useMutation({
+  const {mutate,isPending} = useMutation({
     mutationFn: async (newExpense) => {
       const res = await axiosSecure.post("/expenses", newExpense);
       return res.data;
@@ -36,9 +35,8 @@ const AddExpenseForm = () => {
   });
 
   const onSubmit = (data) => {
-    mutation.mutate(data);
-    reset(); // Clear form after submission
-    // alert("Expense added successfully!");
+    mutate(data);
+    reset();
   };
 
   return (
@@ -113,7 +111,7 @@ const AddExpenseForm = () => {
           )}
         </div>
 
-          <Button level=" Add Expense"></Button>
+          <Button isPending={isPending} level="Add Expense"></Button>
         {/* <button type="submit" className="btn btn-primary w-full">
          
         </button> */}
