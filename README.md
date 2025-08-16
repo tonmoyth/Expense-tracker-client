@@ -1,12 +1,41 @@
-# React + Vite
+# 💰 Personal Expense Tracker
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A full-stack **MERN** application to track daily expenses.  
+Users can **add, view, update, and delete** expenses with a simple and user-friendly interface.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 📌 GitHub Repository server
 
-## Expanding the ESLint configuration
+👉 [Project Source Code](https://github.com/tonmoyth/Expense-tracker-server)  
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 📌 GitHub Repository client
+
+👉 [Project Source Code](https://github.com/tonmoyth/Expense-tracker-client) 
+---
+
+## 🚀 Features
+
+- ➕ Add new expense  
+- 📋 View all expenses  
+- ✏️ Edit existing expense  
+- ❌ Delete expense  
+- 📅 Track expenses with date  
+- ⚡ Optimized data fetching with **TanStack Query**
+
+---
+
+## 🛠 Tech Stack
+
+- **Frontend:** React (Vite), Tailwind CSS, DaisyUI, React Hook Form, TanStack Query, Axios  
+- **Backend:** Node.js, Express.js, MongoDB, dotenv, CORS  
+- **Database:** MongoDB Atlas  
+
+---
+
+## ⚙️ Setup Instructions
+
+### 1️⃣ Clone the Repository
+```bash
+git clone https://github.com/tonmoyth/Expense-tracker-client.git
+cd expense-tracker
