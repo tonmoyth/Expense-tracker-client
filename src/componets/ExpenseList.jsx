@@ -93,7 +93,7 @@ const ExpenseList = () => {
           <h2 className="text-xl font-semibold mb-4">Expense List</h2>
           <p className="text-xl mb-6">Total Amount: ${totalExpense}</p>
           <select
-            className="select select-bordered "
+            className="select select-bordered mb-2"
            onChange={(e) => setCategory(e.target.value)}
           >
             {categories.map((cat) => (
